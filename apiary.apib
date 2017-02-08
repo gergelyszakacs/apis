@@ -7,7 +7,6 @@ The jobposts API allows umantis to query the status of jobposts.
 ## JobPosts Publications read [/jobposts/{umantis_customer_id}?page={page}&limit={limit}]
 
 + Request
-
     + Headers
         Authorization : API-KEY deadbeef
     + Parameters
@@ -31,19 +30,20 @@ The jobposts API allows umantis to query the status of jobposts.
 ## JobPosts Publications update [/jobposts/{umantis_customer_id}/{umantis_job_id}]
 
 + Request
-
     + Headers
         Authorization : API-KEY deadbeef
     + Parameters
         + umantis_customer_id: 1 (number, required) - the contents of the umantis-customer-id tag
         + umantis_job_id: 2 (number, requird) - the id sent in field umantis-job-id in the XML document
+
+### Update JobPosts for an umantis customer for a specific job [POST]
+
++ Request
     + Body
-    +Attributes
+    + Attributes
         + desired_visibility: `2015-09-01T12:00:00+01:00` (string, required)
         + _embedded
             + jobpost (JobPost, required)
-
-### Update JobPosts for an umantis customer for a specific job [POST]
 
 + Response 200
 
@@ -67,12 +67,12 @@ The jobposts API allows umantis to query the status of jobposts.
 + cost_value: 1054 (number, optional) - the cost of the publication on the job board 
 + cost_currency: EUR (string, optional) - the currency of cost of the publication on the job board, ISO code
 + localizations (array[Localization]) - list of language variants of the job post
-+ links
++ _links
     + deactivate: http://stepstone.com/.... - an URL that points deactivation page/URL of the job post
 
 ## Localization
 + job_title: Java Engineer needed in Eastern-Switzerland area (string, required) - localized job title
-+ job_description: Lorem ipsum dolor sit amet, consetetur sadipscing elitr ... - desciption of the job
++ job_description: Lorem ipsum dolor sit amet consetetur sadipscing elitr ... - desciption of the job
 + locale: en (string, required) - ISO language code
 + _links
     + job_url: http://stepstone.com/.... - an URL that points to the language specific job page in the channel
