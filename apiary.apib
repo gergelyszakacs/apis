@@ -2,20 +2,24 @@ FORMAT: 1A
 
 # utm-jobposts
 
-The jobposts API allows umantis to query the status of jobposts.
+The jobposts API enables Haufe-umantis partners to update and query the jobposts information.
 
-## JobPosts Publications read [/jobposts/{umantis_customer_id}?page={page}&limit={limit}]
+## JobPosts Publications [/jobposts]
 
++ Attributes (JobPost)
+
+### List JobPosts [GET /jobposts{?page,limit}]
+
+Lists all jobposts for an umantis customer. Invalid API key will return a 403.
+
++ Parameters
+    + page: 0 (number, optional) - in order not to overload the network we go page by page
+    + limit: 50 (number, optional) - number of items on a page, by default a 100 items are returned if there is no page parameter
 + Request
     + Headers
-        Authorization : API-KEY deadbeef
-    + Parameters
-        + umantis_customer_id: 1 (number, required) - the contents of the umantis-customer-id tag
-        + page: 0 (number, optional) - in order not to overload the network we go page by page
-        + limit: 10 (number, optional) - number of items on a page
+    
+            Authorization : API-KEY deadbeef - the string API-KEY followed by a space character and the API key value
 
-
-### List JobPosts for an umantis customer [GET]
 
 + Response 200 (application/hal+json)
     + Body  
@@ -24,34 +28,49 @@ The jobposts API allows umantis to query the status of jobposts.
             + jobposts (array[JobPost])
         + page (Page)
         + _links
-            + self: /jobposts/1054 (string)
-            + next: /jobposts/1054?page=1&limit=10 (string)
+            + self
+                + href: /jobposts/1054 (string)
+            + next
+                + href: /jobposts/1054?page=1&limit=100 (string)
+                
 
-## JobPosts Publications update [/jobposts/{umantis_customer_id}/{umantis_job_id}]
++ Response 403
+
+### Update JobPosts  [PUT /jobposts/{umantis_job_id}]
+
+Updates a specific job for an umantis customer.
+
+
+Invalid Requests:
+| Cause                        | Response code     |
+|------------------------------|-------------------|
+| Invalid API key              | 403               |
+| Invalid message format       | 406               |
+
+
++ Parameters
+    + umantis_job_id: 2 (number, required) - the id sent in field umantis-job-id in the XML document
 
 + Request
     + Headers
-        Authorization : API-KEY deadbeef
-    + Parameters
-        + umantis_customer_id: 1 (number, required) - the contents of the umantis-customer-id tag
-        + umantis_job_id: 2 (number, requird) - the id sent in field umantis-job-id in the XML document
-
-### Update JobPosts for an umantis customer for a specific job [POST]
-
-+ Request
+    
+            Authorization: API-KEY deadbeef
     + Body
     + Attributes
-        + desired_visibility: `2015-09-01T12:00:00+01:00` (string, required)
+        + available_until: `2015-09-01T12:00:00+01:00` (string, required)
         + _embedded
             + jobpost (JobPost, required)
 
 + Response 200
 
++ Response 403
+
++ Response 406
 
 #Data Structures
 
 ## JobPost
-+ umantis_job_id: 1 (number, required) - the contents of the umantis-job-id tag
++ umantis_job_id: 1 (number, optional) - the contents of the umantis-job-id tag
 + jobtitle: Java rockstar for talent management (string, required) - the contents of the name tag
 + jobboard_publications (array[Jobboard Publication])
 
@@ -68,17 +87,25 @@ The jobposts API allows umantis to query the status of jobposts.
 + cost_currency: EUR (string, optional) - the currency of cost of the publication on the job board, ISO code
 + localizations (array[Localization]) - list of language variants of the job post
 + _links
-    + deactivate: http://stepstone.com/.... - an URL that points deactivation page/URL of the job post
+    + deactivate
+        + href: http://solique.ch/.... - an URL that points deactivation page/URL of the job post
+        method: POST, must have a Authorization: Basic header with the job owners username and password
 
 ## Localization
 + job_title: Java Engineer needed in Eastern-Switzerland area (string, required) - localized job title
 + job_description: Lorem ipsum dolor sit amet consetetur sadipscing elitr ... - desciption of the job
++ job_description_parts (array[Job Description Part]) - a list of job description segments in the format of key-value pairs (only specified, but ignored for the moment)
 + locale: en (string, required) - ISO language code
 + _links
-    + job_url: http://stepstone.com/.... - an URL that points to the language specific job page in the channel
+    + job_url
+        + href: http://solique.ch/.... - an URL that points to the language specific job page in the solique system
 
 ## Page
 + page: 0 (number, required) - we are on this page
-+ limit: 10 (number, required) - this is how many elements were requested and at most served
-+ total_elements: 100 (number, required) - this many elements are available for this customer
-+ total_pages: 10 (number, required) - this many pages are available for this customer
++ page_size: 50 (number, required) - this is how many elements were requested and at most served
++ total_count: 100 (number, required) - this many elements are available for this customer
++ total_pages: 2 (number, required) - this many pages are available for this customer
+
+## Job Description Part
++ key: Responsiblities (string, required) - the key for the job description segment
++ value: Lorem ipsum dolor sit amet con ... - the text segment of the job description
