@@ -1,24 +1,53 @@
 FORMAT: 1A
 
-# utm-jobposts
+# utm-multiposter Solique
 
-The jobposts API enables Haufe-umantis partners to update and query the jobposts information.
+The jobposts API enables Haufe-umantis partner (Solique) to update jobposts information.
 
-## JobPosts Publications [/jobposts]
+## JobPosts Publications [/public/multiposters/solique]
 
 + Attributes (JobPost)
 
-### List JobPosts [GET /jobposts{?page,limit}]
+### Update JobPost details  [PUT /public/multiposters/solique/vacancies/{umantis_job_id}]
 
-Lists all jobposts for an umantis customer. Invalid API key will return a 403.
+Updates a specific job for an umantis customer.
+
+
+Invalid Requests:
+| Cause                        | Response code     |
+|------------------------------|-------------------|
+| Invalid SOLIQUE-API-KEY      | 403               |
+| Invalid message format       | 406               |
+
 
 + Parameters
-    + page: 0 (number, optional) - in order not to overload the network we go page by page
-    + limit: 50 (number, optional) - number of items on a page, by default a 100 items are returned if there is no page parameter
+    + umantis_job_id: 2 (number, required) - the id sent in field umantis-job-id in the XML document
+
 + Request
     + Headers
     
-            Authorization : API-KEY deadbeef - the string API-KEY followed by a space character and the API key value
+            Authorization: SOLIQUE-API-KEY deadbeef
+    + Body
+    + Attributes
+        + available_until: `2015-09-01T12:00:00+01:00` (string, required)
+        + _embedded
+            + jobpost (JobPost, required)
+
++ Response 200
+
++ Response 403
+
++ Response 406
+
+### List JobPost details [GET /multiposters/solique/vacancies/{umantis_job_id}]
+
+Lists all jobposts of a position for an umantis customer. atm. this API is not public!
+
++ Parameters
+    + umantis_job_id: 2 (number, required) - the id sent in field umantis-job-id in the XML document+ Request
+    + Headers
+    
+            Authorization : auth-token deadbeef
 
 
 + Response 200 (application/hal+json)
@@ -35,37 +64,6 @@ Lists all jobposts for an umantis customer. Invalid API key will return a 403.
                 
 
 + Response 403
-
-### Update JobPosts  [PUT /jobposts/{umantis_job_id}]
-
-Updates a specific job for an umantis customer.
-
-
-Invalid Requests:
-| Cause                        | Response code     |
-|------------------------------|-------------------|
-| Invalid API key              | 403               |
-| Invalid message format       | 406               |
-
-
-+ Parameters
-    + umantis_job_id: 2 (number, required) - the id sent in field umantis-job-id in the XML document
-
-+ Request
-    + Headers
-    
-            Authorization: API-KEY deadbeef
-    + Body
-    + Attributes
-        + available_until: `2015-09-01T12:00:00+01:00` (string, required)
-        + _embedded
-            + jobpost (JobPost, required)
-
-+ Response 200
-
-+ Response 403
-
-+ Response 406
 
 #Data Structures
 
