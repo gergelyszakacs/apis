@@ -55,12 +55,6 @@ Lists all jobposts of a position for an umantis customer. atm. this API is not p
     + Attributes
         + _embedded
             + jobposts (array[JobPost])
-        + page (Page)
-        + _links
-            + self
-                + href: /jobposts/1054 (string)
-            + next
-                + href: /jobposts/1054?page=1&limit=100 (string)
                 
 
 + Response 403
@@ -83,6 +77,11 @@ Lists all jobposts of a position for an umantis customer. atm. this API is not p
 + modified: `2015-08-24T12:00:00+01:00` (string, optional) - last modification
 + cost_value: 1054 (number, optional) - the cost of the publication on the job board 
 + cost_currency: EUR (string, optional) - the currency of cost of the publication on the job board, ISO code
++ order_placement_date: `2015-08-24T12:00:00+01:00` (string, optional) - date when publication order was created – “Processed on”
++ order_placement_person: (string, optional) - name of person that created the publication order – at Solique it’s: “Processed by”
++ order_number: (number, optional) - ID of publication order - at Solique it’s: “Order number”
++ order_rate: (string, optional) - rate for a single order on a specific media – at Solique it’s: “Rate”
++ contingent: (string, optional) - number of job-publications used, compared to the total number of job-publications available/bought on a specific media
 + localizations (array[Localization]) - list of language variants of the job post
 + _links
     + deactivate
